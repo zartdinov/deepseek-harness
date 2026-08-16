@@ -34,10 +34,6 @@ pnpm run build
 pnpm dsh web
 ```
 
-### 使用 Docker 运行
-
-Web UI 容器、Compose 文件和必须挂载的 volume 见 [`apps/web/README.md`](apps/web/README.md)。
-
 ## 社区与支持
 
 - 欢迎通过 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交反馈或 bug 报告。

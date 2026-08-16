@@ -1,9 +1,3 @@
-# DeepSeek Harness Web UI. The image version is the published `@deepseek-ai/dsh`
-# version; `docker run --rm <image> --version` must print the same value.
-#
-#   docker build -t dsh-web:0.1.0-rc.6 -f apps/web/Dockerfile apps/web
-#   docker run --rm dsh-web:0.1.0-rc.6 --version
-#   DSH_WORKSPACE=/absolute/path/to/project docker compose -f apps/web/compose.yml up --build
 FROM node:24-bookworm-slim AS install
 
 ARG DSH_VERSION=0.1.0-rc.6
@@ -12,7 +6,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends python3 make g++ git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Native addons (node-pty, koffi, spawn-helper) ship install scripts; keep them on.
 RUN npm install -g --ignore-scripts=false "@deepseek-ai/dsh@${DSH_VERSION}" \
     && test "$(dsh --version)" = "${DSH_VERSION}"
 
@@ -36,9 +29,6 @@ COPY --from=install /usr/local /usr/local
 
 RUN test "$(dsh --version)" = "${DSH_VERSION}"
 
-# `dsh web --host 0.0.0.0` is rejected by the CLI. This --patch overlay changes
-# only the composed webserver fallback so published container ports work.
-# It lives under /etc/dsh so a /home/node/.dsh volume does not replace it.
 RUN mkdir -p /etc/dsh /home/node/.dsh /workspace \
     && printf '%s\n' \
         '- id: webserver' \
