@@ -1,0 +1,8 @@
+services:
+  deepseek-harness:
+    image: ghcr.io/zartdinov/deepseek-harness:0.1.0-rc.6
+    ports:
+      - 127.0.0.1:3080:3080
+    volumes:
+      - ./.dsh:/home/node/.dsh
+      - ./workspace:/workspace
