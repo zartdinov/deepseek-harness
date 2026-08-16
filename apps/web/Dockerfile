@@ -19,7 +19,9 @@ LABEL org.opencontainers.image.title="dsh-web" \
       org.opencontainers.image.source="https://github.com/deepseek-ai/deepseek-harness"
 
 ENV DSH_VERSION=${DSH_VERSION} \
-    DSH_TELEMETRY_DISABLED=1
+    DSH_HOME=/home/node/.dsh \
+    DSH_TELEMETRY_DISABLED=1 \
+    HOME=/workspace
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git ca-certificates \
@@ -29,7 +31,7 @@ COPY --from=install /usr/local /usr/local
 
 RUN test "$(dsh --version)" = "${DSH_VERSION}"
 
-RUN mkdir -p /etc/dsh /home/node/.dsh /workspace \
+RUN mkdir -p /etc/dsh "${DSH_HOME}" /workspace \
     && printf '%s\n' \
         '- id: webserver' \
         '  config:' \
@@ -37,7 +39,7 @@ RUN mkdir -p /etc/dsh /home/node/.dsh /workspace \
         '    port: !!js ctx.webStartup.port ?? 3080' \
         > /etc/dsh/docker.cordis.patch.yml \
     && chmod 644 /etc/dsh/docker.cordis.patch.yml \
-    && chown -R node:node /home/node/.dsh /workspace
+    && chown -R node:node "${DSH_HOME}" /workspace
 
 USER node
 WORKDIR /workspace
