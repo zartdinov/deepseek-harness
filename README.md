@@ -34,6 +34,10 @@ pnpm run build
 pnpm dsh web
 ```
 
+### Run with Docker
+
+The Web UI container, Compose file, and required volume mounts are documented in [`apps/web/README.md`](apps/web/README.md).
+
 ## Community and support
 
 - Feel free to submit feedback or bug reports through [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).
